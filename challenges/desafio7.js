@@ -31,5 +31,12 @@ db.movies.aggregate(
         mediaIMDB: { $round: ["$mediaIMDB", 1] },
       },
     },
+    {
+      $sort:
+      {
+        numeroFilmes: -1,
+        _id: -1,
+      },
+    },
   ],
 );
