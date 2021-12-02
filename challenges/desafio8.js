@@ -1,15 +1,15 @@
 db.air_alliances.aggregate(
   [
     {
+      $unwind: "$airlines",
+    },
+    {
       $lookup: {
         from: "air_routes",
         localField: "airlines",
         foreignField: "airline.name",
         as: "routes",
       },
-    },
-    {
-      $unwind: "$airlines",
     },
     {
       $unwind: "$routes",
@@ -20,15 +20,8 @@ db.air_alliances.aggregate(
       },
     },
     {
-      $match: {
-        $expr: {
-          $eq: ["$airlines", "$routes.airline.name"],
-        },
-      },
-    },
-    {
       $group: {
-        _id: "$airlines",
+        _id: "$name",
         totalRotas: { $count: { } },
       },
     },
